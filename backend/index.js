@@ -1,0 +1,45 @@
+import express from 'express'
+import dotenv from 'dotenv'
+import connectDB from './db/db.js';
+import router from './routes/userRoutes.js';
+import cors from "cors"
+import morgan from 'morgan';
+import middleware from './middleware/Authenticition.js';
+import chalk from 'chalk';
+import cookieParser from 'cookie-parser';
+import profilerouter from './routes/profileRoutes.js';
+import companyRoute from './routes/companyRoutes.js';
+
+
+dotenv.config();
+
+
+const PORT = process.env.PORT
+const app = express();
+
+app.use(express());
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
+app.use(morgan("dev"));
+
+
+// app.use("/", (req, res) => {
+//     res.send('hello world')
+// }) 
+
+app.use("/api/auth", router)
+app.use("/api/auth", profilerouter)
+app.use("/api/auth",companyRoute )
+
+app.use(middleware);
+
+app.listen(PORT, () => {
+    connectDB();
+    console.log(chalk.bgGreen.white(`server will be start on the port ${PORT}`))
+
+})
+
+
+
+
