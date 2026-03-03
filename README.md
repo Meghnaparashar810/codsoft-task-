@@ -35,7 +35,7 @@ This project uses Swagger for API documentation.
 
 After running the server, visit:
 
-http://localhost:8000/api-docs
+http://localhost:8000/api-doc
 
 to see all available endpoints and test APIs.
 
