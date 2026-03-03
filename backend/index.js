@@ -1,3 +1,6 @@
+
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerui, {serve, setup } from 'swagger-ui-express';
 import express from 'express'
 import dotenv from 'dotenv'
 import connectDB from './db/db.js';
@@ -9,15 +12,40 @@ import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import profilerouter from './routes/profileRoutes.js';
 import companyRoute from './routes/companyRoutes.js';
+import helmet from 'helmet';
 
 
 dotenv.config();
 
 
 const PORT = process.env.PORT
-const app = express();
 
+// Api documentation 
+// swagger-ui 
+// swagger-api-documentation 
+const options = {
+    definition: {   
+        openapi: "3.0.0",
+        info: {
+            title: "Job Portal Application",
+            version: "1.0.0",   
+            description: "MERN stack job portal application",
+        },
+        servers: [
+            {
+                url: "http://localhost:8000",
+            },
+        ]
+    },
+    apis: ["./routes/*.js"],
+};
+
+const spec = swaggerJSDoc(options);
+
+const app = express();
 app.use(express());
+// secuity ke inputs hai yeah 
+app.use(helmet())
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
@@ -30,8 +58,9 @@ app.use(morgan("dev"));
 
 app.use("/api/auth", router)
 app.use("/api/auth", profilerouter)
-app.use("/api/auth",companyRoute )
+app.use("/api/auth", companyRoute)
 
+app.use("/api-doc", swaggerui.serve, swaggerui.setup(spec));
 app.use(middleware);
 
 app.listen(PORT, () => {
