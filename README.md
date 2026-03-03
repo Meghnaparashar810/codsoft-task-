@@ -29,6 +29,17 @@ backend/
 │── server.js
 ```
 
+## 📘 API Documentation
+
+This project uses Swagger for API documentation.
+
+After running the server, visit:
+
+http://localhost:8000/api-docs
+
+to see all available endpoints and test APIs.
+
+
 ## ⚙️ Installation & Setup
 
 1. Clone the repository
